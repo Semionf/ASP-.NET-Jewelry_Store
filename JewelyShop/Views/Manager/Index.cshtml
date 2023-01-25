@@ -1,0 +1,128 @@
+﻿@model JewelyShop.Models.Group
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@Model.Name</h1>
+
+<p>
+    <a asp-action="Create" asp-route-id="@Model.ID">הוספת קבוצה</a>
+</p>
+<p>
+    <a asp-action="AddItem" asp-route-id="@Model.ID">הוספת פריט</a>
+</p>
+@if(Model.Parent != null)
+{
+    <p>
+        <a asp-action="Index" asp-route-id="@Model.Parent.ID">חזרה לקבוצה @Model.Parent.Name</a>
+    </p>
+}
+@if(Model.SubGroups.Count>0)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model.SubGroups) {
+        <tr>
+           
+            <td>
+                 <a asp-action="Index" asp-route-id="@item.ID">
+                @Html.DisplayFor(modelItem => item.Name)
+                </a>
+            </td>
+            <td>
+                        <a asp-action ="Index" asp-route-id="@item.ID">
+                @Html.DisplayFor(modelItem => item.Description)
+                        </a>
+            </td>
+            <td>
+                 @Html.ActionLink("הוספת תת קבוצה ל " +item.Name, "Create", new {  id=item.ID }) |
+                @Html.ActionLink("הוספת פריט ל " +item.Name, "AddItem", new {  id=item.ID }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
+
+
+@if (Model.Items.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+
+                    <td>
+                         <a asp-action="Index" asp-route-id="@item.ID">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </a>
+                    </td>
+                    <td>
+                                <a asp-action ="Index" asp-route-id="@item.Group.Name">
+                            @Html.DisplayFor(modelItem => item.Group.Name)
+                                </a>
+                    </td>
+                    <td>
+                        <a asp-action="Index" asp-route-id="@item.Description">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </a>
+                    </td>
+                    <td>
+                        @if (item.Images.Count > 0)
+                            if (item.Images.First() != null)
+                            {
+                                <a asp-action="Details" asp-route-id="@item.ID"></a>
+                                <img src="data:image;base64,@System.Convert.ToBase64String(item.Images.First().MyImage)" width="80" height="60" />
+                            }
+                    </td>
+                    <td>
+                        @Html.ActionLink("הוספת מחיר ל " +item.Name, "AddPrice", new {  id=item.ID }) |
+                        @Html.ActionLink("הוספת תמונה ל " +item.Name, "AddImage", new {  id=item.ID }) |
+                        @Html.ActionLink("פרטים", "Details", new {  id=item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                    
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
