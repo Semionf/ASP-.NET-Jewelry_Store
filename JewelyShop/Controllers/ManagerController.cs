@@ -34,6 +34,7 @@ namespace JewelyShop.Controllers
             return View(new VMCreateGroup { Groups = groups, Parent = groups.First(), ParentID = groups.First().ID });
         }
 
+        // פונקציה המוסיפה קבוצה עם אפשרות להוסיף גם פריט
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(VMCreateGroup VM)
         {
@@ -80,18 +81,28 @@ namespace JewelyShop.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        // פונקציה המציגה פרטי תכשיט
         public IActionResult Details(int? id)
         {
             // אם לא התקבל קוד מוצר, שולח לדף הראשי
             if (id == null) return RedirectToAction("Index", "Home");
-            // שתי השורות מתחת זהות
-            
 
             Item item = Datalayer.Data.Items.Include(i => i.Images).FirstOrDefault(f => f.ID == id);
             // אם הוא לא מצא את החבר
             if (item == null) return RedirectToAction("Index","Home");
             return View(new VMAddItem { Item = item });
         }
+
+        public IActionResult GroupDetails(int? id)
+        {
+            // אם לא התקבל קוד מוצר, שולח לדף הראשי
+            if (id == null) return RedirectToAction("Index", "Home");
+
+            Item item = Datalayer.Data.Items.Include(i => i.Images).FirstOrDefault(f => f.ID == id);
+            // אם הוא לא מצא את החבר
+            if (item == null) return RedirectToAction("Index", "Home");
+            return View(new VMAddItem { Item = item });
+        }
+
     }
 }

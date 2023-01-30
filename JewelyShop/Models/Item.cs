@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JewelyShop.Models
 {
@@ -20,6 +20,7 @@ namespace JewelyShop.Models
         public Group Group { get; set; }
         
         public List<Image> Images { get; set; }
+        [Display(Name = "מחיר")]
         public List<Price> Prices { get; set; }
 
         // פונקציה של הוספת תמונה
@@ -47,5 +48,11 @@ namespace JewelyShop.Models
             price.Item = this;
             return price;
         }
+
+        [NotMapped]
+        public Price GetLastPrice { get{ return GetAllActivePrices.Last(); } }
+
+        [NotMapped]
+        public List<Price> GetAllActivePrices { get{ return Prices.FindAll(p => p.End > DateTime.Now && p.Start < DateTime.Now); } }
     }
 }

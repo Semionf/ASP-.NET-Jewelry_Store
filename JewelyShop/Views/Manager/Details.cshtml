@@ -12,29 +12,37 @@
     {
         if (Model.Item.Images.First().MyImage != null)
         {
-            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Item.Images.First().MyImage)" width="160" height="120" />
+            if (Model.Item.Images.Count > 1)
+            foreach (Image image in Model.Item.Images)
+            {
+                    <img class="card-img-top" src="data:image;base64,@System.Convert.ToBase64String(Model.Item.Images.First().MyImage)" width="120" height="90" />
+                }
+            else
+            {
+                 <img src="data:image;base64,@System.Convert.ToBase64String(Model.Item.Images.First().MyImage)" width="160" height="120" />
+            }
         }
     }
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Item.Images)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Name)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-2">
             @Html.DisplayFor(model => model.Item.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Description)
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.Item.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-2">
             @Html.DisplayFor(model => model.Item.Description)
         </dd>
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.Item.Description)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model =>model.Item.GetLastPrice.MyPrice )
+        </dd>
+        <dt class="col-sm-10">
+            @Html.DisplayNameFor(model => model.Item.Prices)
+        </dt>
     </dl>
 </div>
 <div>

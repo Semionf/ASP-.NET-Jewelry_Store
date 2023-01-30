@@ -17,19 +17,16 @@ namespace JewelyShop.Controllers
 
         public IActionResult Index(int? id)
         {
-            if(id == null)
-            {
-                Group group = Datalayer.Data.GroupsAllIncluded.First();
-                List<Item> items = group.AllItems;
-                return View(items);
-            }
-            else
-            {
-                Group group = Datalayer.Data.GroupsAllIncluded.Find(g=> g.ID == id);
-                List<Item> items = group.AllItems;
-                return View(items);
-            }
-          
+            // קבלת כל הקבוצות מהמסד נתונים
+            List<Group> groups = Datalayer.Data.GroupsAllIncluded;
+            // בדיקה האם לא התקבל קוד, מחזיר את הקבוצה הראשית
+            if (id == null) return View(groups.First().AllItems);
+            // מחפש את הקבוצה לפי הקוד שהתקבל בפונקציה
+            Group group = groups.Find(g=> g.ID == id);
+            // אם לא נמצאה קבוצה, מחזיר את הקבוצה הראשית
+            if (group == null) return View(groups.First().AllItems);
+            // מחזיר את הקבוצה שנמצאה
+            return View(group.AllItems);
         }
 
         public IActionResult test()

@@ -109,25 +109,33 @@ namespace JewelyShop.Models
         {
             get { return GetItems(this); }
         }
-
+        // פונקציה הראשונה המקבלת קבוצה ובונה רשימה ריקה עבור הפריטים
         private List<Item> GetItems(Group group)
         {
            List<Item> items = new List<Item>();
-            return GetItems(group, items);
+            // שליחה לפונקציה הפנימית את הרשימה הריקה ביחד עם הקבוצה הראשית
+           GetItems(group, items);
+           return items;
         }
-        private List<Item> GetItems(Group group, List<Item> items)
+        // קבלה בפונקציה של קבוצה עם הרשימה
+        private void GetItems(Group group, List<Item> items)
         {
+            // בדיקה האם יש תתי קבוצות לקבוצה הנוכחית
            if(group.SubGroups.Count > 0)
+                // ריצה על כל תתי הקבוצות
                 foreach (Group group1 in group.SubGroups)
                 {
-                    return GetItems(group1, items);
+                    // שליחה של כל תת קבוצה שוב לפונקציה ביחד עם הרשימה המתמלאת
+                     GetItems(group1, items);
                 }
+           // בדיקה האם יש פריטים בקבוצה הנוכחית
            if(group.Items.Count > 0)
                 foreach (Item item in group.Items)
                 {
+                    // הוספת הפריטים של הקבוצה הנוכחית לרשימה
                     items.Add(item);
                 }
-           return items;
+            return;
         }
     }
 }
